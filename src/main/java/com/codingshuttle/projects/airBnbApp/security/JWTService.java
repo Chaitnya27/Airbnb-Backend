@@ -17,11 +17,15 @@ public class JWTService {
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
 
+    private SecretKey secretKey;
+
     private SecretKey getSecretKey() {
-        if (jwtSecretKey == null || jwtSecretKey.length() < 32) {
-            throw new RuntimeException("JWT Secret Key is missing or too short!");
+        if (secretKey == null) {
+            if (jwtSecretKey == null || jwtSecretKey.length() < 32)
+                throw new RuntimeException("JWT Secret Key is missing or too short!");
+            secretKey = Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
         }
-        return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
+        return secretKey;
     }
 
     public String generateAccessToken(User user) {
