@@ -18,6 +18,9 @@ public class JWTService {
     private String jwtSecretKey;
 
     private SecretKey getSecretKey() {
+        if (jwtSecretKey == null || jwtSecretKey.length() < 32) {
+            throw new RuntimeException("JWT Secret Key is missing or too short!");
+        }
         return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 
