@@ -37,7 +37,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         String requestPath = request.getServletPath();
 
         // Define public routes (must match what you configured in SecurityFilterChain)
-        List<String> publicRoutes = List.of("/auth/", "/hotels/", "/v3/api-docs", "/swagger-ui", "/webhook");
+        List<String> publicRoutes = List.of("/auth/", "/hotels/", "/v3/api-docs", "/swagger-ui", "/webhook", "/ping");
         return publicRoutes.stream().anyMatch(requestPath::startsWith);
     }
 
@@ -69,4 +69,6 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             handlerExceptionResolver.resolveException(request, response, null, ex);
         }
     }
+
+
 }
